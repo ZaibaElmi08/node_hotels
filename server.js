@@ -188,9 +188,9 @@ app.post('/menu',async(req,res)=>{
   }
 })
 
-mongoose.connect(mongoURL, {
-  serverSelectionTimeoutMS: 30000, // Increase timeout to 30 seconds
-});
+// mongoose.connect(mongoURL, {
+//   serverSelectionTimeoutMS: 30000, // Increase timeout to 30 seconds
+// });
 
 app.get('/menu',async(req,res)=>
   {
