@@ -85,6 +85,10 @@ const express=require('express')
 const app=express();
 const db=require('./db');
 require('dotenv').config();
+const passport=require('passport');
+const LocalStrategy=require('passport-local').Strategy;
+const Person=require('./models/person');
+
 const bodyParser=require('body-parser');
 app.use(bodyParser.json());
 const PORT=process.env.PORT || 3000;
@@ -92,7 +96,7 @@ const person=require('./models/person');
 const menuItem=require('./models/menuItem');
 app.get('/',function(req,res)
 {
-  res.send("Welcom To My Hotel...How Can I Help You?,We have list of menu ")
+  res.send("Welcome To My Hotel...How Can I Help You?,We have list of menu ")
 })
 
 // app.get('/zaiba',function(req,res){
@@ -228,6 +232,40 @@ catch(err)
   res.status(500).json({error:'Internal Server Error'});
 }
 })
+
+const logRequest=(req,res,next)=>
+{
+  console.log(`[${new Date().toLocaleString()}]Request Made To:${req.originalUrl}`);
+  next();
+}
+
+app.use(logRequest);
+app.get('/',function(req,res){
+  res.send('Welcome to our hotel');
+})
+
+app.use(new LocalStrategy(async(username,password,done)=>{
+  try
+  {
+    console.log('Received credentials:',username,password);
+    const user=Person.findOne({username:USERNAME});
+    if(!user)
+      return done(null,false,{message:'Incorrect username.'});
+    const isPasseordMatch=user.password===password?true:false;
+    if(isPasswordMatch)
+    {
+      return done(null,user);
+    }
+    else
+    {
+      return done(null,false,{message:'Incorrect password.'});
+    }
+  }
+  catch(err)
+  {
+    return done(err);
+  }
+}));
 
 const personRoutes=require('./routes/personRoutes');
 app.use('/person',personRoutes);
