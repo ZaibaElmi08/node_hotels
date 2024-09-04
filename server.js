@@ -187,6 +187,11 @@ app.post('/menu',async(req,res)=>{
      res.status(500).json({error:'Internal Server Error'});
   }
 })
+
+mongoose.connect(mongoURL, {
+  serverSelectionTimeoutMS: 30000, // Increase timeout to 30 seconds
+});
+
 app.get('/menu',async(req,res)=>
   {
     try
