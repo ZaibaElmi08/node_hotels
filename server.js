@@ -84,8 +84,10 @@ const { notDeepEqual } = require("assert")
 const express=require('express')
 const app=express();
 const db=require('./db');
+require('dotenv').config();
 const bodyParser=require('body-parser');
 app.use(bodyParser.json());
+const PORT=process.env.PORT || 3000;
 const person=require('./models/person');
 const menuItem=require('./models/menuItem');
 app.get('/',function(req,res)
@@ -230,7 +232,8 @@ const menuRoutes=require('./routes/menuRoutes');
 app.use('/menu',menuRoutes);
 
 
-app.listen(3000,()=>
+
+app.listen(PORT,()=>
 {
   console.log('listening on port')
 })
